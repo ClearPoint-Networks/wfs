@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SentraGuard | Roblox Anti-Cheat Solution</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+
+    /* Reset and base */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Inter', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f9f9f9; /* Light mode background */
+      color: #222; /* Dark text for light mode */
+      line-height: 1.6;
+      font-size: 1rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: background 0.5s ease, color 0.5s ease;
+    }
+    body.dark {
+      background: #121214; /* True night dark bg */
+      color: #e3e3e3; /* Light text for dark mode */
+    }
+
+    a {
+      color: #fa007f; /* Pink-red accent */
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    a:hover {
+      color: #ff4ea0;
+      text-decoration: underline;
+    }
+    body.dark a {
+      color: #fa00b1;
+    }
+    body.dark a:hover {
+      color: #ff70cc;
+    }
+
+    /* Header */
+    header {
+      background: #eee; /* light mode header bg */
+      padding: 2.5rem 1rem;
+      text-align: center;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      border-bottom: 1px solid #ddd;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      transition: background 0.5s ease, color 0.5s ease;
+    }
+    body.dark header {
+      background: #222228; /* dark mode header bg */
+      box-shadow: 0 6px 15px rgba(0,0,0,0.7);
+      border-bottom: 1px solid #3a003c;
+    }
+    header h1 {
+      font-weight: 800;
+      font-size: 3rem;
+      margin: 0;
+      color: #fa007f; /* pink-red accent */
+      letter-spacing: 0.06em;
+      text-shadow: 0 0 8px #fa00b180;
+      transition: color 0.5s ease, text-shadow 0.5s ease;
+    }
+    header p {
+      font-weight: 600;
+      margin-top: 0.4rem;
+      color: #555; /* lighter text for light mode */
+      font-size: 1.2rem;
+      letter-spacing: 0.03em;
+      transition: color 0.5s ease;
+    }
+    body.dark header p {
+      color: #bbb;
+    }
+
+    /* Main content */
+    main {
+      max-width: 850px;
+      margin: 3rem auto 4rem;
+      padding: 0 1.5rem;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4rem;
+      transition: color 0.5s ease;
+    }
+    section h2 {
+      font-weight: 700;
+      font-size: 2rem;
+      color: #fa007f;
+      border-left: 6px solid #fa007f;
+      padding-left: 14px;
+      margin-bottom: 1.2rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      text-shadow: 0 0 5px #fa00b150;
+      transition: color 0.5s ease, border-color 0.5s ease, text-shadow 0.5s ease;
+    }
+    section p {
+      font-weight: 400;
+      color: #444; /* dark text in light mode */
+      font-size: 1.125rem;
+      max-width: 800px;
+      margin-bottom: 1rem;
+      transition: color 0.5s ease;
+    }
+    body.dark section p {
+      color: #ccc;
+    }
+    section p strong {
+      color: #fa007f;
+    }
+    ul {
+      list-style: none;
+      padding-left: 0;
+      max-width: 800px;
+      color: #666;
+      font-size: 1.1rem;
+      line-height: 1.7;
+      transition: color 0.5s ease;
+    }
+    body.dark ul {
+      color: #ddd;
+    }
+    ul li {
+      position: relative;
+      padding-left: 30px;
+      margin-bottom: 12px;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+    ul li::before {
+      content: ".";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #fa007f;
+      font-weight: 700;
+      font-size: 1.2rem;
+      text-shadow: 0 0 5px #fa007f80;
+      transition: color 0.5s ease, text-shadow 0.5s ease;
+    }
+
+    /* Footer */
+    footer {
+      background: #eee;
+      text-align: center;
+      padding: 1.6rem 1rem;
+      font-size: 0.95rem;
+      color: #555;
+      border-top: 1px solid #fa007f;
+      box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
+      user-select: none;
+      letter-spacing: 0.03em;
+      transition: background 0.5s ease, color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
+    }
+    body.dark footer {
+      background: #222228;
+      color: #999;
+      border-top: 1px solid #fa00b1;
+      box-shadow: 0 -4px 10px rgba(255,0,177,0.3);
+    }
+
+    /* Toggle button */
+    .toggle-container {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: #fa007f;
+      width: 50px;
+      height: 26px;
+      border-radius: 15px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #fa007f88;
+      transition: background 0.3s ease;
+      display: flex;
+      align-items: center;
+      padding: 0 5px;
+      user-select: none;
+      z-index: 150;
+    }
+    .toggle-container:hover {
+      background: #ff4ea0;
+    }
+    .toggle-circle {
+      background: white;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      transition: transform 0.3s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    body.dark .toggle-circle {
+      transform: translateX(24px);
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 2.2rem;
+      }
+      main {
+        margin: 2rem 1rem 3rem;
+      }
+      section h2 {
+        font-size: 1.5rem;
+        padding-left: 10px;
+        border-left-width: 4px;
+      }
+      ul li {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="toggle-container" id="toggleDarkMode" title="Toggle Dark/Light Mode">
+    <div class="toggle-circle"></div>
+  </div>
+  <header>
+    <h1>SentraGuard</h1>
+    <p>Roblox Anti-Cheat Solution — Keep Your Games Fair &amp; Secure</p>
+  </header>
+  <main>
+    <section>
+      <h2>What is SentraGuard?</h2>
+      <p>
+        SentraGuard is a lightweight, easy-to-integrate anti-cheat system designed specifically for Roblox developers. It helps maintain fair gameplay by detecting and preventing exploiters in real-time without affecting player experience.
+      </p>
+      <p>
+        Built with Roblox’s unique environment in mind, SentraGuard uses a <strong>3-Line Defence system</strong> to protect your game from client tampering, remote abuse, and server vulnerabilities — ensuring your community stays safe and your game runs smoothly.
+      </p>
+    </section>
+    <section>
+      <h2>Key Features</h2>
+      <ul>
+        <li>3-Line Defence System: Client, Remote, and Server protection layers</li>
+        <li>Real-time Exploit Detection with fast response</li>
+        <li>Script Injection Prevention tailored for Roblox’s Lua environment</li>
+        <li>Monitoring of RemoteEvents &amp; RemoteFunctions to stop abuse</li>
+        <li>Modular Design for easy integration into any Roblox game</li>
+        <li>Detailed Logs and Developer Alerts via Discord or in-game</li>
+        <li>Secure Client-Server Communication preventing spoofing</li>
+        <li>Lightweight and optimized for minimal performance impact</li>
+      </ul>
+    </section>
+    <section>
+      <h2>Get Started</h2>
+      <p>
+        Integrating SentraGuard into your Roblox project is straightforward. Download the package from our <a href="https://github.com/yourrepo/sentraguard" target="_blank" rel="noopener noreferrer">GitHub repository</a>, follow the setup guide, and start protecting your game today.
+      </p>
+      <p>
+        For detailed documentation, troubleshooting, and support, visit our <a href="https://docs.google.com/document/d/1f9L0N_NlO8GouZcCy5OzsN6akdT8uGV6uLhWbIpikZg/edit?usp=sharing" target="_blank" rel="noopener noreferrer">documentation site</a>.
+      </p>
+    </section>
+  </main>
+  <footer>
+    &copy; 2025 SentraGuard — Crafted with care by ClearPoint Networks | <a href="https://discord.gg/bmkDtSEMQA" target="_blank" rel="noopener noreferrer">Discord</a>
+  </footer>
+
+  <script>
+    const toggle = document.getElementById('toggleDarkMode');
+    const body = document.body;
+
+    // Load saved mode
+    if (localStorage.getItem('darkMode') === 'true') {
+      body.classList.add('dark');
+    }
+
+    toggle.addEventListener('click', () => {
+      body.classList.toggle('dark');
+      localStorage.setItem('darkMode', body.classList.contains('dark'));
+    });
+  </script>
+</body>
+</html>
